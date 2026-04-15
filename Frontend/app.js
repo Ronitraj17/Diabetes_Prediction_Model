@@ -1,4 +1,3 @@
-// Dark Mode Logic
 const themeToggle = document.getElementById('themeToggle');
 const html = document.documentElement;
 
@@ -6,7 +5,6 @@ themeToggle.addEventListener('click', () => {
     html.classList.toggle('dark');
 });
 
-// Form Elements
 const form = document.getElementById('predictionForm');
 const resultsSection = document.getElementById('resultsSection');
 const resetBtn = document.getElementById('resetBtn');
@@ -14,11 +12,9 @@ const riskPercentageEl = document.getElementById('riskPercentage');
 const riskLabelEl = document.getElementById('riskLabel');
 const suggestionsList = document.getElementById('suggestionsList');
 
-// Form Submission Logic
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // 1. Gather Data
     const formData = {
         gender: document.getElementById('gender').value,
         age: parseFloat(document.getElementById('age').value),
@@ -29,15 +25,12 @@ form.addEventListener('submit', async (e) => {
         glucose: parseFloat(document.getElementById('glucose').value),
         hba1c: parseFloat(document.getElementById('hba1c').value)
     };
-
-    // 2. Hide form, show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerText;
     submitBtn.innerText = "Analyzing...";
     submitBtn.disabled = true;
 
     try {
-        // 3. ACTUAL BACKEND CONNECTION
         const response = await fetch('http://127.0.0.1:5000/predict', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -50,10 +43,8 @@ form.addEventListener('submit', async (e) => {
             throw new Error(result.error || "Prediction failed");
         }
 
-        // Make sure this matches the key sent from your Flask app.py!
         const riskScore = result.riskPercentage; 
 
-        // 4. Display Results
         displayResults(riskScore);
         
         form.classList.add('hidden');
@@ -94,8 +85,6 @@ function addSuggestions(suggestions) {
         suggestionsList.appendChild(li);
     });
 }
-
-// Reset Form Logic
 resetBtn.addEventListener('click', () => {
     resultsSection.classList.add('hidden');
     form.classList.remove('hidden');
