@@ -12,7 +12,7 @@ try:
     model_xgb = pipeline_data['model_xgb']
     model_lgb = pipeline_data['model_lgb']
     model_rf = pipeline_data['model_rf']
-    print("Machine Learning models loaded successfully!")
+    print("Ensemble Intelligence Loaded Successfully!")
 except Exception as e:
     print(f"Error loading model: {e}")
 
@@ -22,17 +22,17 @@ def predict():
         data = request.get_json()
 
         gender_map = {'Male': 0, 'Female': 1, 'Other': 2}
-        gender = gender_map.get(data['gender'], 2) 
+        gender = gender_map.get(data.get('gender'), 2) 
 
         smoking_map = {'never': 4, 'past': 3, 'active': 1}
-        smoking_history = smoking_map.get(data['smoking_history'], 0) 
+        smoking_history = smoking_map.get(data.get('smoking_history'), 0) 
 
-        age = float(data['age'])
-        hypertension = int(data['hypertension'])
-        heart_disease = int(data['heart_disease'])
-        bmi = float(data['bmi'])
-        glucose = float(data['glucose'])
-        hba1c = float(data['hba1c'])
+        age = float(data.get('age', 0))
+        hypertension = int(data.get('hypertension', 0))
+        heart_disease = int(data.get('heart_disease', 0))
+        bmi = float(data.get('bmi', 0))
+        glucose = float(data.get('blood_glucose_level', 0))
+        hba1c = float(data.get('HbA1c_level', 0))
 
         feature_names = ['gender', 'age', 'hypertension', 'heart_disease', 'smoking_history', 'bmi', 'HbA1c_level', 'blood_glucose_level']
         features_df = pd.DataFrame([[
@@ -48,20 +48,35 @@ def predict():
         final_prob = (p1 + p2 + p3) / 3
         risk_score = int(round(final_prob * 100))
 
-        print("\n" + "="*30)
-        print("1. INCOMING DATA:")
-        print(f"Age: {age}, BMI: {bmi}, Glucose: {glucose}, HbA1c: {hba1c}")
-        print("\n2. RAW MODEL PROBABILITIES (Class 1):")
-        print(f"   XGBoost:       {p1:.4f}")
-        print(f"   LightGBM:      {p2:.4f}")
-        print(f"   Random Forest: {p3:.4f}")
-        print(f"\n3. FINAL MATH:")
-        print(f"   Calculated %:  {risk_score}%")
-        print("="*30 + "\n")
+        if risk_score < 30:
+            label = "Low Risk"
+            suggestions = [
+                "Maintain your current balanced diet.",
+                "Continue regular physical activity (30 mins/day).",
+                "Routine check-up recommended once a year."
+            ]
+        elif 30 <= risk_score < 70:
+            label = "Moderate Risk (Pre-Diabetic)"
+            suggestions = [
+                "Reduce refined sugar and high-carb intake.",
+                "Increase daily fiber (vegetables, whole grains).",
+                "Consult a physician for a Glucose Tolerance Test."
+            ]
+        else:
+            label = "High Risk"
+            suggestions = [
+                "Immediate consultation with an Endocrinologist is advised.",
+                "Monitor blood glucose levels daily.",
+                "Strict adherence to a low-glycemic index diet."
+            ]
+
+        print(f"Prediction: {risk_score}% | Status: {label}")
 
         return jsonify({
             'success': True,
-            'riskPercentage': risk_score
+            'riskPercentage': risk_score,
+            'riskLabel': label,
+            'suggestions': suggestions
         })
 
     except Exception as e:
