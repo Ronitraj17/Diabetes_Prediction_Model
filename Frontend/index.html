@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,123 +7,117 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        pagebg: '#F9FAFB',
-                        cardbg: '#FFFFFF',
-                        darkbg: '#111827',
-                        darkcard: '#1F2937',
-                        primary: '#000000',
-                        primaryhover: '#374151',
-                        darkprimary: '#FFFFFF',
-                        darkprimaryhover: '#D1D5DB'
+                        medicalBlue: 'rgba(205, 220, 227, 0.95)', 
+                        slateAccent: '#1e293b'
                     }
                 }
             }
         }
     </script>
     <style>
-        body { transition: background-color 0.3s ease, color 0.3s ease; }
         .fade-in { animation: fadeIn 0.5s ease-in forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .glass-card {
+            background: rgba(205, 220, 227, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4 text-gray-900 dark:text-gray-100 bg-cover bg-center bg-no-repeat"
+<body class="min-h-screen flex items-center justify-center p-4 text-slate-800 bg-cover bg-center bg-no-repeat bg-fixed"
       style="background-image: url('diapic1.png');">
 
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 bg-white/10"></div>
 
-    <div class="relative z-10 bg-cardbg dark:bg-darkcard w-full max-w-lg rounded-2xl shadow-lg p-6 sm:p-8 fade-in border border-gray-200 dark:border-gray-700">
+    <div class="relative z-10 glass-card w-full max-w-lg rounded-[2.5rem] shadow-2xl p-8 sm:p-10 fade-in">
         
-        <button id="themeToggle" class="absolute top-6 right-6 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition">
-            🌓
-        </button>
+        <div class="flex flex-col items-center mb-8 text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-1">Diabetes Predictor</h2>
+            <p class="text-slate-600 font-medium opacity-80">Ensemble-Based Risk Assessment</p>
+        </div>
 
-        <h2 class="text-2xl font-semibold mb-2 text-center">Diabetes Predictor</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">Enter your vitals to predict your risk profile.</p>
-
-        <form id="predictionForm" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <form id="predictionForm" class="space-y-5">
+            <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Gender</label>
-                    <select id="gender" required class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
+                    <label class="block text-[12px] uppercase tracking-wider font-bold text-slate-700 mb-2 ml-1">Gender</label>
+                    <select id="gender" required class="w-full p-3 rounded-xl bg-white/80 border border-slate-300 focus:ring-2 focus:ring-slate-400 outline-none transition">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1">Age</label>
-                    <input type="number" id="age" required min="0" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
+                    <label class="block text-[12px] uppercase tracking-wider font-bold text-slate-700 mb-2 ml-1">Current Age</label>
+                    <input type="number" id="age" required min="0" placeholder="Years" class="w-full p-3 rounded-xl bg-white/80 border border-slate-300 focus:ring-2 focus:ring-slate-400 outline-none">
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Hypertension</label>
-                    <select id="hypertension" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
+                    <label class="block text-[12px] uppercase tracking-wider font-bold text-slate-700 mb-2 ml-1">Hypertension</label>
+                    <select id="hypertension" class="w-full p-3 rounded-xl bg-white/80 border border-slate-300 outline-none">
+                        <option value="0">Negative</option>
+                        <option value="1">Positive</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1">Heart Disease</label>
-                    <select id="heart_disease" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
+                    <label class="block text-[12px] uppercase tracking-wider font-bold text-slate-700 mb-2 ml-1">Heart Disease</label>
+                    <select id="heart_disease" class="w-full p-3 rounded-xl bg-white/80 border border-slate-300 outline-none">
+                        <option value="0">Negative</option>
+                        <option value="1">Positive</option>
                     </select>
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Smoking History</label>
-                <select id="smoking_history" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                    <option value="never">Never</option>
-                    <option value="past">Past</option>
-                    <option value="active">Active</option>
+                <label class="block text-[12px] uppercase tracking-wider font-bold text-slate-700 mb-2 ml-1">Smoking History</label>
+                <select id="smoking_history" class="w-full p-3 rounded-xl bg-white/80 border border-slate-300 outline-none">
+                    <option value="never">Non-Smoker</option>
+                    <option value="past">Past Smoker</option>
+                    <option value="active">Active Smoker</option>
                 </select>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">BMI</label>
-                    <input type="number" id="bmi" step="0.1" required class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                    <p class="text-xs text-gray-500 mt-1 dark:text-gray-400">Normal: 18.5 - 24.9</p>
+            <div class="grid grid-cols-3 gap-3">
+                <div class="text-center">
+                    <label class="block text-[12px] uppercase font-bold text-slate-700 mb-1">BMI</label>
+                    <input type="number" id="bmi" step="0.1" required placeholder="0.0" class="w-full p-2.5 rounded-xl bg-white/80 border border-slate-300 text-center outline-none">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Glucose</label>
-                    <input type="number" id="glucose" required class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                    <p class="text-xs text-gray-500 mt-1 dark:text-gray-400">Normal: &lt; 100 mg/dL</p>
+                <div class="text-center">
+                    <label class="block text-[12px] uppercase font-bold text-slate-700 mb-1">Glucose</label>
+                    <input type="number" id="glucose" required placeholder="mg/dL" class="w-full p-2.5 rounded-xl bg-white/80 border border-slate-300 text-center outline-none">
                 </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">HbA1c</label>
-                    <input type="number" id="hba1c" step="0.1" required class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-darkprimary">
-                    <p class="text-xs text-gray-500 mt-1 dark:text-gray-400">Normal: &lt; 5.7%</p>
+                <div class="text-center">
+                    <label class="block text-[12px] uppercase font-bold text-slate-700 mb-1">HbA1c</label>
+                    <input type="number" id="hba1c" step="0.1" required placeholder="%" class="w-full p-2.5 rounded-xl bg-white/80 border border-slate-300 text-center outline-none">
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-primary hover:bg-primaryhover dark:bg-darkprimary dark:hover:bg-darkprimaryhover text-white dark:text-black font-medium py-3 rounded-xl transition duration-300 mt-4 shadow-sm">
+            <button type="submit" id="submitBtn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg active:scale-[0.98]">
                 Analyze Health Profile
             </button>
         </form>
 
-        <div id="resultsSection" class="hidden text-center fade-in py-6">
-            <h3 class="text-xl font-semibold mb-4">Risk Analysis Complete</h3>
-            <div class="inline-flex items-center justify-center w-32 h-32 rounded-full border-8 border-gray-800 dark:border-gray-200 mb-4">
-                <span id="riskPercentage" class="text-3xl font-bold">--%</span>
+        <div id="resultsSection" class="hidden text-center fade-in py-4">
+            <h3 class="text-2xl font-bold text-slate-800 mb-6">Analysis Results</h3>
+            <div class="relative inline-flex items-center justify-center w-36 h-36 rounded-full border-[10px] border-white/50 mb-6 shadow-inner">
+                <span id="riskPercentage" class="text-4xl font-black text-slate-800">--%</span>
             </div>
-            <p id="riskLabel" class="text-lg font-medium mb-4">Awaiting Data</p>
+            <p id="riskLabel" class="text-xl font-bold mb-6 text-slate-700 uppercase tracking-wide">Risk Level</p>
             
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 text-left mb-6 border border-gray-200 dark:border-gray-700">
-                <h4 class="font-semibold mb-2">Suggestions:</h4>
-                <ul id="suggestionsList" class="list-disc pl-5 text-sm space-y-1"></ul>
+            <div class="bg-white/60 rounded-2xl p-6 text-left mb-8 border border-white/40">
+                <h4 class="font-bold text-slate-900 mb-3 border-b border-slate-300 pb-1">Health Recommendations:</h4>
+                <ul id="suggestionsList" class="list-disc pl-5 text-sm text-slate-700 space-y-2"></ul>
             </div>
 
-            <button id="resetBtn" class="w-full border-2 border-primary dark:border-darkprimary text-primary dark:text-darkprimary hover:bg-primary dark:hover:bg-darkprimary hover:text-white dark:hover:text-black font-medium py-2 rounded-xl transition duration-300">
+            <button id="resetBtn" class="w-full py-3 px-6 rounded-xl border-2 border-slate-800 text-slate-800 font-bold hover:bg-slate-800 hover:text-white transition duration-300">
                 Assess Another Profile
             </button>
         </div>
